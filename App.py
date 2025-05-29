@@ -4,7 +4,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-# 1. CACHING DE DATOS PESADOS
+# CACHING DE DATOS PESADOS
 @st.cache_data
 def load_data(path):
     df = pd.read_csv(path)
@@ -13,11 +13,11 @@ def load_data(path):
 
 df = load_data("retail_store_sales_clean.csv")
 
-# 2. CONFIG PAGE & THEME
+# CONFIG PAGE & THEME
 st.set_page_config(page_title="Retail Sales Dashboard", layout="wide")
 px.defaults.template = "plotly_white"
 
-# 3. SIDEBAR DE FILTROS
+# SIDEBAR DE FILTROS
 st.sidebar.header("Filtros")
 min_date = df["Transaction Date"].dt.date.min()
 max_date = df["Transaction Date"].dt.date.max()
@@ -48,7 +48,7 @@ locations_filter = all_locations if "Todas" in sel_loc else sel_loc
 # Agregación inicial
 agg_option = st.sidebar.radio("Agregación temporal", ("Diaria", "Semanal", "Mensual", "Anual"))
 
-# 4. FILTRADO y columnas auxiliares
+# FILTRADO y columnas auxiliares
 mask = (
     (df["Transaction Date"].dt.date >= start_date) &
     (df["Transaction Date"].dt.date <= end_date) &
@@ -62,7 +62,7 @@ df_filt['Month']       = df_filt['Transaction Date'].dt.month_name()
 df_filt['Channel']     = df_filt['Location'].apply(lambda x: 'Online' if x.lower()=='online' else 'In-Store')
 df_filt['HasDiscount'] = df_filt['Discount Applied'] > 0
 
-# 5. KPIs
+# KPIs
 st.title("📊 Retail Store Sales Dashboard")
 c1,c2,c3,c4 = st.columns(4)
 total_sales = df_filt["Total Spent"].sum()
@@ -74,64 +74,58 @@ c2.metric("🎫 Ticket Promedio", f"${avg_ticket:,.2f}")
 c3.metric("📦 Cantidad Vendida", f"{total_qty:,.0f}")
 c4.metric("% Con Descuento", f"{pct_disc:.1f}%")
 
-# TENDENCIAS TEMPORALES (un gráfico con dropdown)
+# TENDENCIAS TEMPORALES 
 st.header("1. Tendencias Temporales")
-freq_map = {"Diaria":"D","Semanal":"W-MON","Mensual":"M","Anual":"A"}
-agg_data = {}
-for label,freq in freq_map.items():
-    if label=="Anual":
-        tmp = (df_filt.groupby(df_filt['Transaction Date'].dt.year)
-               .agg({"Total Spent":"sum","Quantity":"sum"})
-               .reset_index().rename(columns={'index':'Year'}))
-        tmp['Transaction Date'] = pd.to_datetime(tmp['Transaction Date'].astype(int).astype(str)+"-01-01")
-        agg_data[label] = tmp[['Transaction Date','Total Spent','Quantity']]
-    else:
-        tmp = df_filt.resample(freq, on="Transaction Date").agg({"Total Spent":"sum","Quantity":"sum"}).reset_index()
-        agg_data[label] = tmp
 
-fig = go.Figure()
-for idx,(label,df_agg) in enumerate(agg_data.items()):
-    fig.add_trace(go.Scatter(
-        x=df_agg["Transaction Date"],
-        y=df_agg["Total Spent"],
-        name=f"Ventas ({label})",
-        visible=(label==agg_option)
-    ))
+# Mapeo de frecuencias según la opción del sidebar
+freq_map = {"Diaria": "D", "Semanal": "W-MON", "Mensual": "M", "Anual": "A"}
+freq = freq_map[agg_option]
 
-buttons=[]
-for idx,label in enumerate(freq_map.keys()):
-    vis=[i==idx for i in range(len(freq_map))]
-    buttons.append(dict(label=label, method="update",
-                        args=[{"visible":vis},
-                              {"title":f"Ventas agregadas ({label.lower()})"}]))
-fig.update_layout(
-    updatemenus=[dict(active=list(freq_map.keys()).index(agg_option),
-                      buttons=buttons, x=0,y=1.2,xanchor="left",yanchor="top")],
-    title=f"Ventas agregadas ({agg_option.lower()})",
-    xaxis_title="Fecha", yaxis_title="Ventas ($)"
+# Agregamos según esa frecuencia
+df_time = df_filt.resample(freq, on="Transaction Date").agg({
+    "Total Spent": "sum",
+    "Quantity": "sum"
+}).reset_index()
+
+# Un único gráfico de ventas
+fig_sales = px.line(
+    df_time,
+    x="Transaction Date",
+    y="Total Spent",
+    labels={"Transaction Date": "Fecha", "Total Spent": "Ventas ($)"},
+    title=f"Ventas {agg_option.lower()} agregadas",
+    hover_data={"Total Spent": ":.2f"}
 )
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig_sales, use_container_width=True)
 
-# 7. Canales de Venta
-st.header("2. Canales de Venta")
-df_ch = df_filt.groupby("Channel")["Total Spent"].sum().reset_index()
-fig_ch = px.pie(df_ch, names="Channel", values="Total Spent", title="% Ventas por Canal")
-st.plotly_chart(fig_ch, use_container_width=True)
+# Canales de Venta
+st.header("2. Evolución de Ventas por Canal")
 
-df_ch_t = (df_filt.groupby([pd.Grouper(key="Transaction Date",freq="W-MON"),"Channel"])
-           ["Total Spent"].sum().reset_index())
-fig_ch_t = px.line(df_ch_t, x="Transaction Date", y="Total Spent", color="Channel",
-                   title="Evolución Semanal por Canal")
+df_ch_t = (
+    df_filt
+    .groupby([pd.Grouper(key="Transaction Date", freq=freq), "Channel"])["Total Spent"]
+    .sum()
+    .reset_index()
+)
+fig_ch_t = px.line(
+    df_ch_t,
+    x="Transaction Date",
+    y="Total Spent",
+    color="Channel",
+    labels={"Transaction Date": "Fecha", "Total Spent": "Ventas ($)"},
+    title=f"Evolución {agg_option.lower()} de Ventas por Canal"
+)
 st.plotly_chart(fig_ch_t, use_container_width=True)
 
-# 6. Ventas por Categoría
+
+# Ventas por Categoría
 st.header("3. Ventas por Categoría")
 df_cat = df_filt.groupby("Category")["Total Spent"].sum().sort_values().reset_index()
 fig_cat = px.bar(df_cat, x="Total Spent", y="Category", orientation="h",
                  labels={"Total Spent":"Ventas ($)","Category":"Categoría"})
 st.plotly_chart(fig_cat, use_container_width=True)
 
-# 8. Botón de descarga
+# Botón de descarga
 csv = df_filt.to_csv(index=False).encode('utf-8')
 st.download_button("📥 Descargar datos filtrados", data=csv,
                    file_name="ventas_filtradas.csv", mime="text/csv")
