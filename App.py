@@ -54,11 +54,21 @@ df_filt['Channel']     = df_filt['Location'].apply(lambda x: 'Online' if x.lower
 st.title("Dashboard de Tienda Minorista")
 c1, c2, c3= st.columns(3)
 total_sales = df_filt["Total Spent"].sum()
+total_sales_online = df_filt[df_filt["Channel"] == "Online"]["Total Spent"].sum()
+total_sales_instore = df_filt[df_filt["Channel"] == "In-Store"]["Total Spent"].sum()
 avg_ticket  = df_filt["Total Spent"].mean() if not df_filt.empty else 0
 total_qty   = df_filt["Quantity"].sum()
 c1.metric("Ventas Totales", f"${total_sales:,.0f}")
 c2.metric("Ticket Promedio", f"${avg_ticket:,.2f}")
 c3.metric("Cantidad Vendida", f"{total_qty:,.0f}")
+
+st.subheader("Ventas por Canal")
+c1, c2 = st.columns(2)
+
+with c1:
+    st.metric("Ventas Online", f"${total_sales_online:,.0f}")
+with c2:
+    st.metric("Ventas In-Store", f"${total_sales_instore:,.0f}")
 
 # PREPARAR DATOS DE TENDENCIAS Y CANAL
 freq = "D"
