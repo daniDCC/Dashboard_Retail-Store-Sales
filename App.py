@@ -52,19 +52,16 @@ df_filt = df[mask].copy().sort_values("Transaction Date")
 df_filt['DayOfWeek']   = df_filt['Transaction Date'].dt.day_name()
 df_filt['Month']       = df_filt['Transaction Date'].dt.month_name()
 df_filt['Channel']     = df_filt['Location'].apply(lambda x: 'Online' if x.lower()=='online' else 'In-Store')
-df_filt['HasDiscount'] = df_filt['Discount Applied'] > 0
 
 # KPIs
 st.title("Dashboard de Tienda Minorista")
-c1, c2, c3, c4 = st.columns(4)
+c1, c2, c3= st.columns(3)
 total_sales = df_filt["Total Spent"].sum()
 avg_ticket  = df_filt["Total Spent"].mean() if not df_filt.empty else 0
 total_qty   = df_filt["Quantity"].sum()
-pct_disc    = df_filt["HasDiscount"].mean() * 100 if not df_filt.empty else 0
 c1.metric("Ventas Totales", f"${total_sales:,.0f}")
 c2.metric("Ticket Promedio", f"${avg_ticket:,.2f}")
 c3.metric("Cantidad Vendida", f"{total_qty:,.0f}")
-c4.metric("% Con Descuento", f"{pct_disc:.1f}%")
 
 # PREPARAR DATOS DE TENDENCIAS Y CANAL
 freq_map = {"Diaria":"D", "Semanal":"W-MON", "Mensual":"M", "Anual":"A"}
