@@ -45,6 +45,9 @@ all_locations = df["Location"].unique().tolist()
 sel_loc = st.sidebar.multiselect("Ubicación", ["Todas"]+all_locations, ["Todas"])
 locations_filter = all_locations if "Todas" in sel_loc else sel_loc
 
+# Agregación inicial
+agg_option = st.sidebar.radio("Agregación temporal", ("Diaria", "Semanal", "Mensual", "Anual"))
+
 # 4. FILTRADO y columnas auxiliares
 mask = (
     (df["Transaction Date"].dt.date >= start_date) &
