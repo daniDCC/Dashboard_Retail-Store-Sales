@@ -78,7 +78,12 @@ c4.metric("% Con Descuento", f"{pct_disc:.1f}%")
 st.header("1. Tendencias Temporales")
 
 # Mapeo de frecuencias según la opción del sidebar
-freq_map = {"Diaria": "D", "Semanal": "W-MON", "Mensual": "M", "Anual": "A"}
+freq_map = {
+    "Diaria": "D",
+    "Semanal": "W-MON",
+    "Mensual": "M",
+    "Anual": "AS-JAN"
+}
 freq = freq_map[agg_option]
 
 # Agregamos según esa frecuencia
