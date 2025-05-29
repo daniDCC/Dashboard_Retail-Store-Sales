@@ -55,7 +55,7 @@ df_filt['Channel']     = df_filt['Location'].apply(lambda x: 'Online' if x.lower
 df_filt['HasDiscount'] = df_filt['Discount Applied'] > 0
 
 # KPIs
-st.title("Retail Store Sales Dashboard")
+st.title("Dashboard de Tienda Minorista")
 c1, c2, c3, c4 = st.columns(4)
 total_sales = df_filt["Total Spent"].sum()
 avg_ticket  = df_filt["Total Spent"].mean() if not df_filt.empty else 0
