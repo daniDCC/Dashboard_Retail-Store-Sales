@@ -54,11 +54,11 @@ df_filt['Channel']     = df_filt['Location'].apply(lambda x: 'Online' if x.lower
 st.title("Dashboard de Tienda Minorista")
 c1, c2, c3, c4, c5 = st.columns(5)
 
-total_sales = df_filt["Total Spent"].sum()
-total_sales_online = df_filt[df_filt["Location"] == "Online"]["Total Spent"].sum()
-total_sales_instore = df_filt[df_filt["Location "] == "In-Store"]["Total Spent"].sum()
-avg_ticket  = df_filt["Total Spent"].mean() if not df_filt.empty else 0
-total_qty   = df_filt["Quantity"].sum()
+total_sales           = df_filt["Total Spent"].sum()
+total_sales_online    = df_filt[df_filt["Location"] == "Online"]["Total Spent"].sum()
+total_sales_instore   = df_filt[df_filt["Location"] == "In-Store"]["Total Spent"].sum()
+avg_ticket            = df_filt["Total Spent"].mean() if not df_filt.empty else 0
+total_qty             = df_filt["Quantity"].sum()
 
 c1.metric("Ventas Totales",    f"${total_sales:,.0f}")
 c2.metric("Ventas Online",     f"${total_sales_online:,.0f}")
