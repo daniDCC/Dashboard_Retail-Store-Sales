@@ -113,17 +113,43 @@ with col2:
     )
     st.plotly_chart(fig_ch_t, use_container_width=True)
 
-# Ventas por Categoría
-st.header("Ventas por Categoría")
-df_cat = df_filt.groupby("Category")["Total Spent"].sum().sort_values().reset_index()
-fig_cat = px.bar(
-    df_cat,
-    x="Total Spent",
-    y="Category",
-    orientation="h",
-    labels={"Total Spent":"Ventas ($)","Category":"Categoría"}
-)
-st.plotly_chart(fig_cat, use_container_width=True)
+col3, col4 = st.columns(2)
+
+with col3:
+    st.subheader("Distribución de ventas por método de pago")
+    ventas_pago = (
+        df_filt
+        .groupby("Payment Method")["Total Spent"]
+        .sum()
+        .sort_values(ascending=False)
+        .reset_index()
+    )
+    fig_pago = px.pie(
+        ventas_pago,
+        names="Payment Method",
+        values="Total Spent",
+        title="Ventas por Método de Pago",
+        hole=0.4
+    )
+    st.plotly_chart(fig_pago, use_container_width=True)
+
+with col4:
+    st.subheader("Ventas por Categoría")
+    df_cat = (
+        df_filt
+        .groupby("Category")["Total Spent"]
+        .sum()
+        .sort_values()
+        .reset_index()
+    )
+    fig_cat = px.bar(
+        df_cat,
+        x="Total Spent",
+        y="Category",
+        orientation="h",
+        labels={"Total Spent":"Ventas ($)", "Category":"Categoría"}
+    )
+    st.plotly_chart(fig_cat, use_container_width=True)
 
 # Botón de descarga
 csv = df_filt.to_csv(index=False).encode('utf-8')
