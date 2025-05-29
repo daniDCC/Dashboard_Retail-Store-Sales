@@ -91,7 +91,7 @@ fig_sales = px.line(
     x="Transaction Date",
     y="Total Spent",
     labels={"Transaction Date":"Fecha", "Total Spent":"Ventas ($)"},
-    title=f"Ventas {agg_option.lower()} agregadas",
+    title=f"Ventas {agg_option.lower()}",
     hover_data={"Total Spent":":.2f"}
 )
 st.plotly_chart(fig_sales, use_container_width=True)
