@@ -101,7 +101,7 @@ with col1:
         x="Transaction Date",
         y="Total Spent",
         labels={"Transaction Date":"Fecha","Total Spent":"Ventas ($)"},
-        title=f"Ventas {agg_option.lower()} agregadas",
+        title=f"Evolución de las Ventas",
         hover_data={"Total Spent":":.2f"}
     )
     st.plotly_chart(fig_sales, use_container_width=True)
@@ -114,7 +114,7 @@ with col2:
         y="Total Spent",
         color="Channel",
         labels={"Transaction Date":"Fecha","Total Spent":"Ventas ($)"},
-        title=f"Evolución {agg_option.lower()} de Ventas por Canal"
+        title=f"Evolución {agg_option.lower()} de Ventas por Ubicación"
     )
     st.plotly_chart(fig_ch_t, use_container_width=True)
 
