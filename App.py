@@ -95,7 +95,7 @@ df_ch_t = pd.DataFrame(records_chan).sort_values(["Channel","Transaction Date"])
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("Tendencias Temporales")
+    st.subheader("Ventas")
     fig_sales = px.line(
         df_time,
         x="Transaction Date",
