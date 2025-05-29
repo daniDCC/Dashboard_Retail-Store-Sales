@@ -114,7 +114,7 @@ with col2:
         y="Total Spent",
         color="Channel",
         labels={"Transaction Date":"Fecha","Total Spent":"Ventas ($)"},
-        title=f"Evolución {agg_option.lower()} de Ventas por Ubicación"
+        title=f"Evolución de las Ventas por Ubicación"
     )
     st.plotly_chart(fig_ch_t, use_container_width=True)
 
