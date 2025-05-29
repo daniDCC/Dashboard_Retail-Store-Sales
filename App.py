@@ -66,57 +66,57 @@ c2.metric("🎫 Ticket Promedio", f"${avg_ticket:,.2f}")
 c3.metric("📦 Cantidad Vendida", f"{total_qty:,.0f}")
 c4.metric("% Con Descuento", f"{pct_disc:.1f}%")
 
-# TENDENCIAS TEMPORALES (agrupación manual para fechas reales)
-st.header("1. Tendencias Temporales")
-
-# Mapeo de frecuencias
+# PREPARAR DATOS DE TENDENCIAS Y CANAL
 freq_map = {"Diaria":"D", "Semanal":"W-MON", "Mensual":"M", "Anual":"A"}
 freq = freq_map[agg_option]
 
-# Agrupamos por período y etiquetamos con la última fecha de cada grupo
-records = []
+# Tendencias
+records_time = []
 for period, grp in df_filt.groupby(pd.Grouper(key="Transaction Date", freq=freq)):
-    if grp.empty:
-        continue
-    last_date = grp["Transaction Date"].max()
-    total_spent = grp["Total Spent"].sum()
-    records.append({"Transaction Date": last_date, "Total Spent": total_spent})
-df_time = pd.DataFrame(records).sort_values("Transaction Date")
+    if grp.empty: continue
+    records_time.append({
+        "Transaction Date": grp["Transaction Date"].max(),
+        "Total Spent": grp["Total Spent"].sum()
+    })
+df_time = pd.DataFrame(records_time).sort_values("Transaction Date")
 
-# Gráfico de ventas agregadas
-fig_sales = px.line(
-    df_time,
-    x="Transaction Date",
-    y="Total Spent",
-    labels={"Transaction Date":"Fecha", "Total Spent":"Ventas ($)"},
-    title=f"Ventas {agg_option.lower()}",
-    hover_data={"Total Spent":":.2f"}
-)
-st.plotly_chart(fig_sales, use_container_width=True)
-
-# EVOLUCIÓN DE VENTAS POR CANAL (misma lógica de agrupación)
-st.header("2. Evolución de Ventas por Canal")
-
-records = []
+# online o in-store
+records_chan = []
 for (period, canal), grp in df_filt.groupby([pd.Grouper(key="Transaction Date", freq=freq), "Channel"]):
-    if grp.empty:
-        continue
-    records.append({
+    if grp.empty: continue
+    records_chan.append({
         "Transaction Date": grp["Transaction Date"].max(),
         "Channel": canal,
         "Total Spent": grp["Total Spent"].sum()
     })
-df_ch_t = pd.DataFrame(records).sort_values(["Channel","Transaction Date"])
+df_ch_t = pd.DataFrame(records_chan).sort_values(["Channel","Transaction Date"])
 
-fig_ch_t = px.line(
-    df_ch_t,
-    x="Transaction Date",
-    y="Total Spent",
-    color="Channel",
-    labels={"Transaction Date":"Fecha", "Total Spent":"Ventas ($)"},
-    title=f"Evolución {agg_option.lower()} de Ventas por Canal"
-)
-st.plotly_chart(fig_ch_t, use_container_width=True)
+# GRAFICOS LADO A LADO
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("1. Tendencias Temporales")
+    fig_sales = px.line(
+        df_time,
+        x="Transaction Date",
+        y="Total Spent",
+        labels={"Transaction Date":"Fecha","Total Spent":"Ventas ($)"},
+        title=f"Ventas {agg_option.lower()} agregadas",
+        hover_data={"Total Spent":":.2f"}
+    )
+    st.plotly_chart(fig_sales, use_container_width=True)
+
+with col2:
+    st.subheader("2. Evolución de Ventas por Canal")
+    fig_ch_t = px.line(
+        df_ch_t,
+        x="Transaction Date",
+        y="Total Spent",
+        color="Channel",
+        labels={"Transaction Date":"Fecha","Total Spent":"Ventas ($)"},
+        title=f"Evolución {agg_option.lower()} de Ventas por Canal"
+    )
+    st.plotly_chart(fig_ch_t, use_container_width=True)
 
 # Ventas por Categoría
 st.header("3. Ventas por Categoría")
