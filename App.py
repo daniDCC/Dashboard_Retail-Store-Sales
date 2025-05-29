@@ -37,9 +37,6 @@ all_locations = df["Location"].unique().tolist()
 sel_loc = st.sidebar.multiselect("Ubicación", ["Todas"] + all_locations, ["Todas"])
 locations_filter = all_locations if "Todas" in sel_loc else sel_loc
 
-# Agregación seleccionada
-agg_option = st.sidebar.radio("Agregación temporal", ("Diaria", "Semanal", "Mensual", "Anual"))
-
 # FILTRADO y columnas auxiliares
 mask = (
     (df["Transaction Date"].dt.date >= start_date) &
@@ -64,8 +61,7 @@ c2.metric("Ticket Promedio", f"${avg_ticket:,.2f}")
 c3.metric("Cantidad Vendida", f"{total_qty:,.0f}")
 
 # PREPARAR DATOS DE TENDENCIAS Y CANAL
-freq_map = {"Diaria":"D", "Semanal":"W-MON", "Mensual":"M", "Anual":"A"}
-freq = freq_map[agg_option]
+freq = "D"
 
 # Tendencias
 records_time = []
