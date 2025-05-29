@@ -107,6 +107,7 @@ with col1:
     st.plotly_chart(fig_sales, use_container_width=True)
 
 with col2:
+    st.subheader("")
     fig_ch_t = px.line(
         df_ch_t,
         x="Transaction Date",
