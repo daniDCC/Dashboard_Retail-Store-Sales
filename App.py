@@ -38,9 +38,7 @@ sel_loc = st.sidebar.multiselect("Ubicación", ["Todas"] + all_locations, ["Toda
 locations_filter = all_locations if "Todas" in sel_loc else sel_loc
 
 # Agregación seleccionada
-agg_option = "Mensual"
-
-# st.sidebar.radio("Agregación temporal", ("Diaria", "Semanal", "Mensual", "Anual"))
+agg_option = st.sidebar.radio("Agregación temporal", ("Diaria", "Semanal", "Mensual", "Anual"))
 
 # FILTRADO y columnas auxiliares
 mask = (
