@@ -8,7 +8,7 @@ df = pd.read_csv("retail_store_sales_clean.csv")
 df['Transaction Date'] = pd.to_datetime(df['Transaction Date'], errors='coerce')
 
 # CONFIG PAGE & THEME
-st.set_page_config(page_title="Retail Sales Dashboard", layout="wide")
+st.set_page_config(page_title="Dashboard de Tienda Minorista", layout="wide")
 px.defaults.template = "plotly_white"
 
 # SIDEBAR DE FILTROS
