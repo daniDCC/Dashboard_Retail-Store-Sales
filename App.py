@@ -21,8 +21,6 @@ start_date, end_date = st.sidebar.date_input(
     min_value=min_date,
     max_value=max_date
 )
-if start_date > end_date:
-    st.sidebar.error("⚠️ El rango inicial no puede ser mayor que el final.")
 
 # Categorías
 all_categories = df["Category"].unique().tolist()
