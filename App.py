@@ -95,7 +95,7 @@ df_ch_t = pd.DataFrame(records_chan).sort_values(["Channel","Transaction Date"])
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("1. Tendencias Temporales")
+    st.subheader("Tendencias Temporales")
     fig_sales = px.line(
         df_time,
         x="Transaction Date",
@@ -107,7 +107,6 @@ with col1:
     st.plotly_chart(fig_sales, use_container_width=True)
 
 with col2:
-    st.subheader("2. Evolución de Ventas por Canal")
     fig_ch_t = px.line(
         df_ch_t,
         x="Transaction Date",
@@ -119,7 +118,7 @@ with col2:
     st.plotly_chart(fig_ch_t, use_container_width=True)
 
 # Ventas por Categoría
-st.header("3. Ventas por Categoría")
+st.header("Ventas por Categoría")
 df_cat = df_filt.groupby("Category")["Total Spent"].sum().sort_values().reset_index()
 fig_cat = px.bar(
     df_cat,
