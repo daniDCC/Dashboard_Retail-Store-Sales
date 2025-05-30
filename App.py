@@ -64,7 +64,7 @@ c1.metric("Ventas Totales",    f"${total_sales:,.0f}")
 c2.metric("Ticket Promedio",   f"${avg_ticket:,.2f}")
 c3.metric("Cantidad Vendida",  f"{total_qty:,.0f}")
 c4.metric("Ventas Online",    f"${online_sales:,.0f}")
-c5.metric("Ventas Online",    f"${instore_sales:,.0f}")
+c5.metric("Ventas in-Store",    f"${instore_sales:,.0f}")
 
 # PREPARAR DATOS DE TENDENCIAS Y CANAL
 freq = "D"
