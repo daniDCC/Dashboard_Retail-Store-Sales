@@ -52,15 +52,19 @@ df_filt['Channel']     = df_filt['Location'].apply(lambda x: 'Online' if x.lower
 
 # KPIs
 st.title("Dashboard de Tienda Minorista")
-c1, c2, c3 = st.columns(3)
+c1, c2, c3, c4, c5 = st.columns(5)
 
-total_sales           = df_filt["Total Spent"].sum()
-avg_ticket            = df_filt["Total Spent"].mean() if not df_filt.empty else 0
-total_qty             = df_filt["Quantity"].sum()
+total_sales   = df_filt["Total Spent"].sum()
+avg_ticket    = df_filt["Total Spent"].mean() if not df_filt.empty else 0
+total_qty     = df_filt["Quantity"].sum()
+online_sales  = df_filt.loc[df_filt['Channel']=='Online',  'Total Spent'].sum()
+instore_sales = df_filt.loc[df_filt['Channel']=='In-Store','Total Spent'].sum()
 
 c1.metric("Ventas Totales",    f"${total_sales:,.0f}")
 c2.metric("Ticket Promedio",   f"${avg_ticket:,.2f}")
 c3.metric("Cantidad Vendida",  f"{total_qty:,.0f}")
+c4.metric("Ventas Online",    f"${online_sales:,.0f}")
+c5.metric("Ventas Online",    f"${instore_sales:,.0f}")
 
 # PREPARAR DATOS DE TENDENCIAS Y CANAL
 freq = "D"
@@ -116,7 +120,7 @@ with col2:
 col3, col4 = st.columns(2)
 
 with col3:
-    st.subheader("Distribución de ventas por método de pago")
+    st.subheader("Ventas por método de pago")
     ventas_pago = (
         df_filt
         .groupby("Payment Method")["Total Spent"]
