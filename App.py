@@ -132,7 +132,6 @@ with col3:
         ventas_pago,
         names="Payment Method",
         values="Total Spent",
-        title="Ventas por Método de Pago",
         hole=0.4
     )
     st.plotly_chart(fig_pago, use_container_width=True)
