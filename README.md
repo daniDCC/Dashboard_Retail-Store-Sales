@@ -59,7 +59,6 @@ https://dashboardretail-store-sales-dqotitdrvjlwy5uggusien.streamlit.app
 ---
 
 ## ▶️ Uso
-    ```bash
     streamlit run App.py
 
 ---
