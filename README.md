@@ -41,22 +41,26 @@ https://dashboardretail-store-sales-dqotitdrvjlwy5uggusien.streamlit.app
 
 ## 📦 Instalación
 
-1. Clona este repositorio:  
+1. Clona este repositorio:
+   ```bash  
    git clone https://github.com/DaniDCC/Dashboard_Retail-Store-Sales.git
    cd Dashboard_Retail-Store-Sales
 
-2. Crea y activa un entorno virtual (opcional pero recomendado):  
+2. Crea y activa un entorno virtual (opcional pero recomendado):
+   ```bash
    python -m venv venv
    source venv/bin/activate   # Linux / Mac
    venv\Scripts\activate      # Windows
 
 3. Instala las dependencias:
+   ```bash
    pip install -r requirements.txt
 
 ---
 
 ## ▶️ Uso
-   streamlit run App.py
+    ```bash
+    streamlit run App.py
 
 ---
 
