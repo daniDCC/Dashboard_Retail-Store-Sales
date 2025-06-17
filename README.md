@@ -8,7 +8,6 @@ Una aplicación interactiva desarrollada con **Streamlit** para explorar y visua
 - [Características](#-características)  
 - [Instalación](#-instalación)  
 - [Uso](#-uso)  
-- [Estructura del proyecto](#-estructura-del-proyecto)  
 - [Datos](#-datos)  
 - [Tecnologías](#-tecnologías)  
 - [Contribuir](#-contribuir)  
@@ -60,18 +59,6 @@ https://dashboardretail-store-sales-dqotitdrvjlwy5uggusien.streamlit.app
 
 ## ▶️ Uso
    streamlit run App.py
-
----
-
-🗂️ Estructura del proyecto
-bash
-Copiar
-Editar
-├── App.py
-├── requirements.txt
-├── retail_store_sales.csv           # Datos crudos originales
-├── retail_store_sales_clean.csv     # Datos depurados para el dashboard
-└── README.md                        
 
 ---
 
