@@ -10,8 +10,6 @@ Una aplicación interactiva desarrollada con **Streamlit** para explorar y visua
 - [Uso](#-uso)  
 - [Datos](#-datos)  
 - [Tecnologías](#-tecnologías)  
-- [Contribuir](#-contribuir)  
-- [Licencia](#-licencia)  
 
 ---
 
