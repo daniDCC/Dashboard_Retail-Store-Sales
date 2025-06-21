@@ -73,7 +73,7 @@ Versión filtrada y limpia (sin valores nulos, formato de fechas homogéneo) que
 
 ---
 
-🛠️ Tecnologías
+## 🛠️ Tecnologías
 - Streamlit
 - Pandas
 - Plotly
