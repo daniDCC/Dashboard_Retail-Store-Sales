@@ -63,7 +63,7 @@ https://dashboardretail-store-sales-dqotitdrvjlwy5uggusien.streamlit.app
 
 ---
 
-🔢 Datos
+## 🔢 Datos
 
 retail_store_sales.csv:
 Dataset original con transacciones, incluye columnas como ID de transacción, categoría, precio, cantidad, total, método de pago, ubicación y fecha.
