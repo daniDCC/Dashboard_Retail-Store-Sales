@@ -199,24 +199,3 @@ st.plotly_chart(fig_pca, use_container_width=True)
 var_exp = pca.explained_variance_ratio_ * 100
 st.write(f"Varianza explicada por PC1: {var_exp[0]:.2f}%")
 st.write(f"Varianza explicada por PC2: {var_exp[1]:.2f}%")
-
-# 3) Visualizaciones Temporales Enriquecidas
-st.subheader("Distribución de Ventas por Día de la Semana")
-fig_box_dw = px.box(
-    df_filt,
-    x='DayOfWeek',
-    y='Total Spent',
-    labels={'DayOfWeek':'Día de la Semana','Total Spent':'Ventas ($)'},
-    title='Ventas por Día de la Semana'
-)
-st.plotly_chart(fig_box_dw, use_container_width=True)
-
-st.subheader("Distribución de Ventas por Mes")
-fig_box_m = px.box(
-    df_filt,
-    x='Month',
-    y='Total Spent',
-    labels={'Month':'Mes','Total Spent':'Ventas ($)'},
-    title='Ventas por Mes'
-)
-st.plotly_chart(fig_box_m, use_container_width=True)
