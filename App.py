@@ -166,7 +166,7 @@ st.download_button(
 )
 
 # === Métodos de visualización ===
-st.header("Análisis Avanzado")
+st.header("Métodos de visualización")
 
 # 1) Heatmap de Correlación
 numerical_cols = df_filt.select_dtypes(include='number').columns.tolist()
@@ -179,7 +179,7 @@ fig_corr = px.imshow(
 )
 st.plotly_chart(fig_corr, use_container_width=True)
 
-# 2) PCA y biplot
+# 2) PCA 
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(df_filt[numerical_cols])
 pca = PCA(n_components=2)
