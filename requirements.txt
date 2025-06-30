@@ -1,4 +1,4 @@
 streamlit
 pandas
 plotly
-scikit-learn
+scikit-learn>=1.0
