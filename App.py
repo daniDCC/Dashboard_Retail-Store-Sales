@@ -165,7 +165,7 @@ st.download_button(
     mime="text/csv"
 )
 
-# === ANÁLISIS AVANZADO ===
+# === Métodos de visualización ===
 st.header("Análisis Avanzado")
 
 # 1) Heatmap de Correlación
