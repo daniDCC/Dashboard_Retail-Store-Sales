@@ -2,6 +2,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from sklearn.preprocessing import StandarScaler
+from sklearn.decomposition import PCA
 
 # Carga de datos
 df = pd.read_csv("retail_store_sales_clean.csv")
@@ -162,3 +164,59 @@ st.download_button(
     file_name="ventas_filtradas.csv",
     mime="text/csv"
 )
+
+# === ANÁLISIS AVANZADO ===
+st.header("Análisis Avanzado")
+
+# 1) Heatmap de Correlación
+numerical_cols = df_filt.select_dtypes(include='number').columns.tolist()
+corr = df_filt[numerical_cols].corr()
+fig_corr = px.imshow(
+    corr,
+    labels={'x':'Variable','y':'Variable','color':'Correlación'},
+    x=corr.columns, y=corr.columns,
+    title="Matriz de Correlación"
+)
+st.plotly_chart(fig_corr, use_container_width=True)
+
+# 2) PCA y biplot
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(df_filt[numerical_cols])
+pca = PCA(n_components=2)
+pca_result = pca.fit_transform(X_scaled)
+df_pca = pd.DataFrame(pca_result, columns=['PC1','PC2'])
+df_pca['Category'] = df_filt['Category'].values
+
+fig_pca = px.scatter(
+    df_pca,
+    x='PC1', y='PC2',
+    color='Category',
+    title='PCA (2 Componentes)',
+    labels={'PC1':'Comp. Principal 1','PC2':'Comp. Principal 2'}
+)
+st.plotly_chart(fig_pca, use_container_width=True)
+# Mostrar varianza explicada
+var_exp = pca.explained_variance_ratio_ * 100
+st.write(f"Varianza explicada por PC1: {var_exp[0]:.2f}%")
+st.write(f"Varianza explicada por PC2: {var_exp[1]:.2f}%")
+
+# 3) Visualizaciones Temporales Enriquecidas
+st.subheader("Distribución de Ventas por Día de la Semana")
+fig_box_dw = px.box(
+    df_filt,
+    x='DayOfWeek',
+    y='Total Spent',
+    labels={'DayOfWeek':'Día de la Semana','Total Spent':'Ventas ($)'},
+    title='Ventas por Día de la Semana'
+)
+st.plotly_chart(fig_box_dw, use_container_width=True)
+
+st.subheader("Distribución de Ventas por Mes")
+fig_box_m = px.box(
+    df_filt,
+    x='Month',
+    y='Total Spent',
+    labels={'Month':'Mes','Total Spent':'Ventas ($)'},
+    title='Ventas por Mes'
+)
+st.plotly_chart(fig_box_m, use_container_width=True)
